@@ -9,31 +9,38 @@ function Login() {
   const [email,setEmail] = useState("");
   const [loginFlag,setloginFlag] = useState(false);
   const [password,setPassword] = useState("");
+  const [result,setResult] = useState([]);
   useEffect(() => {
-    // Login()
+    getLoginUsers()
   },[])
 
   const handleRegisterClick = () => {
     navigate('/register')
   }
+  async function getLoginUsers(){
+    let resp=await fetch("https://645e23db12e0a87ac0e89064.mockapi.io/users",{
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept":'application/json'
+      },
+    });
+    let data = await resp.json();
+    setResult(data)
+    console.log(data)
+  }
 async function Login() {
+  let flag=false;
     console.warn(email,password);
     let item={email:email,password:password};
-    let result=await fetch("https://645e23db12e0a87ac0e89064.mockapi.io/users",{
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Accept":'application/json'
-    },
-  });
-  result = await result.json();
-  for(let i=0;i<result.length;i++){
-     if(email==result[i].email && password==result[i].password){
-      setloginFlag(true)
+    for(let i=0;i<result?.length;i++){
+     if(email==result[i]?.email && password==result[i]?.password){
+      flag=true;
+      break;
      }
   }
    console.warn("result",result)
-  if(loginFlag==true){
+  if(flag==true){
   navigate('/home')
   }else{
     console.warn("invalid credentials");
