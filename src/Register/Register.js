@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import './Register.css';
+import { useNavigate } from 'react-router-dom';
 function Register(){
+    const navigate = useNavigate();
     const [name,setName] = useState("")
     const [password,setPassword] = useState("");
     const [email,setEmail] = useState("");
@@ -18,6 +20,7 @@ function Register(){
             }
         })
         result =await result.json()
+        navigate("/login")
         localStorage.setItem("user-info", JSON.stringify(result))
         
     }
